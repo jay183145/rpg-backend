@@ -1,13 +1,17 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "outDir": "./dist", // Output directory for compiled files
-    "rootDir": ".", // Root directory (current directory)
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
-  },
-  "include": ["**/*.ts"], // Include all TypeScript files in the project
-  "exclude": ["node_modules", "dist"] // Exclude unnecessary directories
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "sourceMap": true,
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./*"]
+        }
+    },
+
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
 }
