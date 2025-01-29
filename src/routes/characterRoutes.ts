@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express"
-import CharacterModel from "@/models/Character.js"
+import CharacterModel from "../models/Character.js"
 
 const router = express.Router()
 

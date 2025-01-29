@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import { CharacterDocument } from "@/types/Character.js"
+import { CharacterDocument } from "../types/Character.js"
 
 const CharacterSchema = new Schema<CharacterDocument>(
     {

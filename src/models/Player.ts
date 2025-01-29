@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import { PlayerDocument } from "@/types/Player.js"
+import { PlayerDocument } from "../types/Player.js"
 
 const PlayerSchema: Schema = new Schema({
     name: { type: String, required: true },
