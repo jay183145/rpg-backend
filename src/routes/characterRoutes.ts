@@ -10,6 +10,7 @@ router.get("/", async (req: Request, res: Response) => {
         res.json(characters)
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch characters." })
+        console.log(err)
     }
 })
 
@@ -25,6 +26,7 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
         res.json(character)
     } catch (err) {
         res.status(500).json({ error: "Failed to fetch the character." })
+        console.log(err)
     }
 })
 
@@ -50,7 +52,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
         res.status(201).json(saved)
     } catch (err) {
         res.status(500).json({ error: "Failed to create character." })
-        return
+        console.log(err)
     }
 })
 
@@ -67,7 +69,7 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
         res.json(updatedCharacter)
     } catch (err) {
         res.status(500).json({ error: "Failed to update character." })
-        return
+        console.log(err)
     }
 })
 
@@ -83,7 +85,7 @@ router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
         res.json({ message: "Character deleted successfully." })
     } catch (err) {
         res.status(500).json({ error: "Failed to delete character." })
-        return
+        console.log(err)
     }
 })
 

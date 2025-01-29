@@ -8,8 +8,9 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     try {
         const players = await Player.find()
         res.json(players)
-    } catch (err: any) {
+    } catch (err) {
         res.status(500).json({ error: err.message })
+        console.log(err)
     }
 })
 
@@ -22,8 +23,9 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
             return
         }
         res.json(player)
-    } catch (err: any) {
+    } catch (err) {
         res.status(500).json({ error: err.message })
+        console.log(err)
     }
 })
 
@@ -38,8 +40,9 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
         const player = new Player({ name, type })
         await player.save()
         res.status(201).json(player)
-    } catch (err: any) {
+    } catch (err) {
         res.status(400).json({ error: err.message })
+        console.log(err)
     }
 })
 
@@ -52,8 +55,9 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
             return
         }
         res.json(updatedPlayer)
-    } catch (err: any) {
+    } catch (err) {
         res.status(400).json({ error: err.message })
+        console.log(err)
     }
 })
 
@@ -66,8 +70,9 @@ router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
             return
         }
         res.json({ message: "Player deleted successfully" })
-    } catch (err: any) {
+    } catch (err) {
         res.status(500).json({ error: err.message })
+        console.log(err)
     }
 })
 
