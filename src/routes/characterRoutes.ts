@@ -4,7 +4,7 @@ import CharacterModel from "../models/Character.js"
 const router = express.Router()
 
 // GET all characters
-router.get("/characters", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
     try {
         const characters = await CharacterModel.find()
         res.json(characters)
@@ -14,7 +14,7 @@ router.get("/characters", async (req: Request, res: Response) => {
 })
 
 // GET character by id
-router.get("/characters/:id", async (req: Request, res: Response): Promise<void> => {
+router.get("/:id", async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params
     try {
         const character = await CharacterModel.findOne({ id: Number(id) })
@@ -29,7 +29,7 @@ router.get("/characters/:id", async (req: Request, res: Response): Promise<void>
 })
 
 // POST create a new character
-router.post("/characters", async (req: Request, res: Response): Promise<void> => {
+router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
         const { id, name, description, image } = req.body
         // Ensure required fields
@@ -55,7 +55,7 @@ router.post("/characters", async (req: Request, res: Response): Promise<void> =>
 })
 
 // PUT update an existing character
-router.put("/characters/:id", async (req: Request, res: Response): Promise<void> => {
+router.put("/:id", async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params
     try {
         const updatedCharacter = await CharacterModel.findOneAndUpdate({ id: Number(id) }, req.body, { new: true })
@@ -72,7 +72,7 @@ router.put("/characters/:id", async (req: Request, res: Response): Promise<void>
 })
 
 // DELETE a character
-router.delete("/characters/:id", async (req: Request, res: Response): Promise<void> => {
+router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params
     try {
         const deletedCharacter = await CharacterModel.findOneAndDelete({ id: Number(id) })
@@ -86,3 +86,5 @@ router.delete("/characters/:id", async (req: Request, res: Response): Promise<vo
         return
     }
 })
+
+export default router

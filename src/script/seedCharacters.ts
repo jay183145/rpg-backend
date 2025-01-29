@@ -85,8 +85,8 @@ async function seedCharacters() {
         console.log("MongoDB connected...")
 
         // Optional: Clear existing records
-        // await CharacterModel.deleteMany({})
-        // console.log("Cleared existing data...")
+        await CharacterModel.deleteMany({})
+        console.log("Cleared existing data...")
 
         // Insert default characters
         const created = await CharacterModel.insertMany(defaultCharacters)

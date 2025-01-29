@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import cors from "cors"
 import dotenv from "dotenv"
 import playerRoutes from "./routes/playerRoutes.js"
+import characterRoutes from "./routes/characterRoutes.js"
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ app.use(
 
 app.use(express.json())
 app.use("/players", playerRoutes)
+app.use("/characters", characterRoutes)
 
 // 連接到 MongoDB
 const connectDB = async () => {
