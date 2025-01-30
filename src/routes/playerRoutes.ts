@@ -29,15 +29,30 @@ router.get("/:_id", async (req: Request, res: Response): Promise<void> => {
     }
 })
 
+// Get a single player by characterClass
+router.get("/class/:characterClass", async (req: Request, res: Response): Promise<void> => {
+    try {
+        const player = await Player.findOne({ characterClass: req.params.characterClass })
+        if (!player) {
+            res.status(404).json({ error: "Player not found" })
+            return
+        }
+        res.json(player)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+        console.log(err)
+    }
+})
+
 // Create a new player
 router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
-        const { name, type, description, image, ...rest } = req.body
-        if (!name || !type || !description || !image) {
-            res.status(400).json({ error: "Name, type, description, and image are required" })
+        const { characterClass, type, description, image, ...rest } = req.body
+        if (!characterClass || !type || !description || !image) {
+            res.status(400).json({ error: "CharacterClass, type, description, and image are required" })
             return
         }
-        const player = new Player({ name, type, description, image, ...rest })
+        const player = new Player({ characterClass, type, description, image, ...rest })
         await player.save()
         res.status(201).json(player)
     } catch (err) {
@@ -49,9 +64,9 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 // Update a player
 router.put("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const { name, type, description, image } = req.body
-        if (!name || !type || !description || !image) {
-            res.status(400).json({ error: "Name, type, description, and image are required" })
+        const { characterClass, type, description, image } = req.body
+        if (!characterClass || !type || !description || !image) {
+            res.status(400).json({ error: "CharacterClass, type, description, and image are required" })
             return
         }
         const updatedPlayer = await Player.findByIdAndUpdate(req.params._id, req.body, { new: true })

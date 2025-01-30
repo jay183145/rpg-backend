@@ -32,21 +32,21 @@ router.get("/:_id", async (req: Request, res: Response): Promise<void> => {
 // POST create a new character
 router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
-        const { name, description, image } = req.body
+        const { characterClass, description, image } = req.body
         // Ensure required fields
-        if (!name || !description || !image) {
+        if (!characterClass || !description || !image) {
             res.status(400).json({ error: "Missing required fields." })
             return
         }
 
-        // Check if the name already exists
-        const existing = await CharacterModel.findOne({ name })
+        // Check if the characterClass already exists
+        const existing = await CharacterModel.findOne({ characterClass })
         if (existing) {
-            res.status(409).json({ error: "Character with this name already exists." })
+            res.status(409).json({ error: "Character with this characterClass already exists." })
             return
         }
 
-        const newCharacter = new CharacterModel({ name, description, image })
+        const newCharacter = new CharacterModel({ characterClass, description, image })
         const saved = await newCharacter.save()
         res.status(201).json(saved)
     } catch (err) {
@@ -58,9 +58,9 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 // PUT update an existing character
 router.put("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const { name, description, image } = req.body
-        if (!name || !description || !image) {
-            res.status(400).json({ error: "Name, description, and image are required" })
+        const { characterClass, description, image } = req.body
+        if (!characterClass || !description || !image) {
+            res.status(400).json({ error: "CharacterClass, description, and image are required" })
             return
         }
         const updatedCharacter = await CharacterModel.findByIdAndUpdate(req.params._id, req.body, { new: true })
