@@ -15,9 +15,9 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 })
 
 // Get a single player by ID
-router.get("/:id", async (req: Request, res: Response): Promise<void> => {
+router.get("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const player = await Player.findById(req.params.id)
+        const player = await Player.findById(req.params._id)
         if (!player) {
             res.status(404).json({ error: "Player not found" })
             return
@@ -62,11 +62,11 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
 })
 
 // Delete a player
-router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
+router.delete("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const player = await Player.findByIdAndDelete(req.params.id)
-        if (!player) {
-            res.status(404).json({ error: "Player not found" })
+        const deletedPlayer = await Player.findByIdAndDelete(req.params._id)
+        if (!deletedPlayer) {
+            res.status(404).json({ error: `Player with id ${req.params._id} not found` })
             return
         }
         res.json({ message: "Player deleted successfully" })

@@ -15,12 +15,11 @@ router.get("/", async (req: Request, res: Response) => {
 })
 
 // GET character by id
-router.get("/:id", async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params
+router.get("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const character = await CharacterModel.findOne({ id: Number(id) })
+        const character = await CharacterModel.findById(req.params._id)
         if (!character) {
-            res.status(404).json({ error: `Character with id ${id} not found.` })
+            res.status(404).json({ error: `Character with id ${req.params._id} not found.` })
             return
         }
         res.json(character)
@@ -74,12 +73,11 @@ router.put("/:id", async (req: Request, res: Response): Promise<void> => {
 })
 
 // DELETE a character
-router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params
+router.delete("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const deletedCharacter = await CharacterModel.findOneAndDelete({ id: Number(id) })
+        const deletedCharacter = await CharacterModel.findByIdAndDelete(req.params._id)
         if (!deletedCharacter) {
-            res.status(404).json({ error: `Character with id ${id} not found.` })
+            res.status(404).json({ error: `Character with id ${req.params._id} not found.` })
             return
         }
         res.json({ message: "Character deleted successfully." })
