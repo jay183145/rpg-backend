@@ -1,50 +1,50 @@
 import express, { Request, Response } from "express"
-import Player from "../models/Player.js"
+import DefaultCharacter from "../models/defaultCharacter.js"
 
 const router = express.Router()
 
-// Get all players
+// Get all defaultCharacters
 router.get("/", async (req: Request, res: Response): Promise<void> => {
     try {
-        const players = await Player.find()
-        res.json(players)
+        const defaultCharacters = await DefaultCharacter.find()
+        res.json(defaultCharacters)
     } catch (err) {
         res.status(500).json({ error: err.message })
         console.log(err)
     }
 })
 
-// Get a single player by ID
+// Get a single defaultCharacter by ID
 router.get("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const player = await Player.findById(req.params._id)
-        if (!player) {
-            res.status(404).json({ error: "Player not found" })
+        const defaultCharacter = await DefaultCharacter.findById(req.params._id)
+        if (!defaultCharacter) {
+            res.status(404).json({ error: "DefaultCharacter not found" })
             return
         }
-        res.json(player)
+        res.json(defaultCharacter)
     } catch (err) {
         res.status(500).json({ error: err.message })
         console.log(err)
     }
 })
 
-// Get a single player by characterClass
+// Get a single defaultCharacter by characterClass
 router.get("/class/:characterClass", async (req: Request, res: Response): Promise<void> => {
     try {
-        const player = await Player.findOne({ characterClass: req.params.characterClass })
-        if (!player) {
-            res.status(404).json({ error: "Player not found" })
+        const defaultCharacter = await DefaultCharacter.findOne({ characterClass: req.params.characterClass })
+        if (!defaultCharacter) {
+            res.status(404).json({ error: "DefaultCharacter not found" })
             return
         }
-        res.json(player)
+        res.json(defaultCharacter)
     } catch (err) {
         res.status(500).json({ error: err.message })
         console.log(err)
     }
 })
 
-// Create a new player
+// Create a new defaultCharacter
 router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
         const { characterClass, type, description, image, ...rest } = req.body
@@ -52,16 +52,16 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ error: "CharacterClass, type, description, and image are required" })
             return
         }
-        const player = new Player({ characterClass, type, description, image, ...rest })
-        await player.save()
-        res.status(201).json(player)
+        const defaultCharacter = new DefaultCharacter({ characterClass, type, description, image, ...rest })
+        await defaultCharacter.save()
+        res.status(201).json(defaultCharacter)
     } catch (err) {
         res.status(400).json({ error: err.message })
         console.log(err)
     }
 })
 
-// Update a player
+// Update a defaultCharacter
 router.put("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
         const { characterClass, type, description, image } = req.body
@@ -69,28 +69,30 @@ router.put("/:_id", async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ error: "CharacterClass, type, description, and image are required" })
             return
         }
-        const updatedPlayer = await Player.findByIdAndUpdate(req.params._id, req.body, { new: true })
-        if (!updatedPlayer) {
-            res.status(404).json({ error: "Player not found" })
+        const updatedDefaultCharacter = await DefaultCharacter.findByIdAndUpdate(req.params._id, req.body, {
+            new: true,
+        })
+        if (!updatedDefaultCharacter) {
+            res.status(404).json({ error: "DefaultCharacter not found" })
             return
         }
 
-        res.json(updatedPlayer)
+        res.json(updatedDefaultCharacter)
     } catch (err) {
         res.status(400).json({ error: err.message })
         console.log(err)
     }
 })
 
-// Delete a player
+// Delete a defaultCharacter
 router.delete("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const deletedPlayer = await Player.findByIdAndDelete(req.params._id)
-        if (!deletedPlayer) {
-            res.status(404).json({ error: `Player with id ${req.params._id} not found` })
+        const deletedDefaultCharacter = await DefaultCharacter.findByIdAndDelete(req.params._id)
+        if (!deletedDefaultCharacter) {
+            res.status(404).json({ error: `DefaultCharacter with id ${req.params._id} not found` })
             return
         }
-        res.json({ message: "Player deleted successfully" })
+        res.json({ message: "DefaultCharacter deleted successfully" })
     } catch (err) {
         res.status(500).json({ error: err.message })
         console.log(err)

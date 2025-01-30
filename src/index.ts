@@ -2,8 +2,7 @@ import express from "express"
 import mongoose from "mongoose"
 import cors from "cors"
 import dotenv from "dotenv"
-import playerRoutes from "./routes/playerRoutes.js"
-import characterRoutes from "./routes/characterRoutes.js"
+import defaultCharacterRoutes from "./routes/defaultCharacterRoutes.js"
 
 dotenv.config()
 
@@ -17,8 +16,7 @@ app.use(
 )
 
 app.use(express.json())
-app.use("/players", playerRoutes)
-app.use("/characters", characterRoutes)
+app.use("/defaultCharacters", defaultCharacterRoutes)
 
 // 連接到 MongoDB
 const connectDB = async () => {

@@ -1,7 +1,7 @@
-// Extend Mongoose's Document and combine it with Player
-export interface PlayerDocument extends Document, Player {}
+// Extend Mongoose's Document and combine it with DefaultCharacter
+export interface DefaultCharacterDocument extends Document, DefaultCharacter {}
 
-export interface Player {
+export interface DefaultCharacter {
     name: string
     level: number
     experience: number
@@ -16,7 +16,7 @@ export interface Player {
     image: string
 }
 
-export const defaultPlayers: Player[] = [
+export const defaultCharacters: DefaultCharacter[] = [
     {
         name: "Warrior",
         level: 1,

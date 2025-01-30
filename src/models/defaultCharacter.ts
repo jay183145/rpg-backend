@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose"
-import { PlayerDocument } from "../types/Player.js"
+import { DefaultCharacterDocument } from "../types/defaultCharacter.js"
 
-export const PlayerSchema = new Schema<PlayerDocument>(
+export const DefaultCharacterSchema = new Schema<DefaultCharacterDocument>(
     {
         name: { type: String, required: true, unique: true },
         level: { type: Number, default: 1 },
@@ -35,4 +35,4 @@ export const PlayerSchema = new Schema<PlayerDocument>(
     { timestamps: true },
 )
 
-export default mongoose.model<PlayerDocument>("Player", PlayerSchema)
+export default mongoose.model<DefaultCharacterDocument>("defaultCharacter", DefaultCharacterSchema)

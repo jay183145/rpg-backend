@@ -9,8 +9,7 @@
         "start": "node dist/index.js",
         "dev": "tsc && node --watch dist/index.js",
         "watch": "tsc --watch",
-        "gen-characters": "tsc && node dist/script/seedCharacters.js",
-        "gen-players": "tsc && node dist/script/seedPlayers.js"
+        "gen-characters": "tsc && node dist/script/seedDefaultCharacters.js"
     },
     "keywords": [],
     "author": "",
