@@ -3,7 +3,7 @@ import { PlayerDocument } from "../types/Player.js"
 
 const PlayerSchema: Schema<PlayerDocument> = new Schema(
     {
-        name: { type: String, required: true },
+        name: { type: String, required: true, unique: true },
         // 這裡列出 11 種職業
         type: {
             type: String,

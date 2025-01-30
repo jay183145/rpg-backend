@@ -56,13 +56,17 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 })
 
 // PUT update an existing character
-router.put("/:id", async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.params
+router.put("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
-        const updatedCharacter = await CharacterModel.findOneAndUpdate({ id: Number(id) }, req.body, { new: true })
+        const { name, description, image } = req.body
+        if (!name || !description || !image) {
+            res.status(400).json({ error: "Name, description, and image are required" })
+            return
+        }
+        const updatedCharacter = await CharacterModel.findByIdAndUpdate(req.params._id, req.body, { new: true })
 
         if (!updatedCharacter) {
-            res.status(404).json({ error: `Character with id ${id} not found.` })
+            res.status(404).json({ error: `Character with id ${req.params._id} not found.` })
             return
         }
         res.json(updatedCharacter)
