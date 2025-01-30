@@ -33,21 +33,21 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
 // POST create a new character
 router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id, name, description, image } = req.body
+        const { name, description, image } = req.body
         // Ensure required fields
-        if (id === undefined || !name || !description || !image) {
+        if (!name || !description || !image) {
             res.status(400).json({ error: "Missing required fields." })
             return
         }
 
-        // Check if the id already exists
-        const existing = await CharacterModel.findOne({ id })
+        // Check if the name already exists
+        const existing = await CharacterModel.findOne({ name })
         if (existing) {
-            res.status(409).json({ error: "Character with this id already exists." })
+            res.status(409).json({ error: "Character with this name already exists." })
             return
         }
 
-        const newCharacter = new CharacterModel({ id, name, description, image })
+        const newCharacter = new CharacterModel({ name, description, image })
         const saved = await newCharacter.save()
         res.status(201).json(saved)
     } catch (err) {
