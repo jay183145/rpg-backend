@@ -1,10 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose"
-
-export interface UserDocument extends Document {
-    username: string
-    email: string
-    password: string
-}
+import mongoose, { Schema } from "mongoose"
+import { UserDocument } from "../types/user.js"
 
 const UserSchema = new Schema<UserDocument>(
     {
