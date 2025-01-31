@@ -1,6 +1,8 @@
 // routes/users.ts
 import { Router, Request, Response } from "express"
 import UserModel from "../models/user.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 const router = Router()
 
@@ -9,7 +11,7 @@ const router = Router()
  * POST /users
  * Body: { username, email, password }
  */
-router.post("/", async (req: Request, res: Response): Promise<void> => {
+router.post("/register", async (req: Request, res: Response): Promise<void> => {
     try {
         const { username, email, password } = req.body
 
@@ -28,8 +30,12 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
             return
         }
 
+        // 雜湊(加鹽)
+        const saltRounds = 12
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
+
         // 3. 建立 User
-        const newUser = new UserModel({ username, email, password })
+        const newUser = new UserModel({ username, email, password: hashedPassword })
         await newUser.save()
 
         // 4. 回傳成功資訊
@@ -41,6 +47,63 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     } catch (err) {
         console.error("Error creating user:", err)
         res.status(500).json({ error: "Failed to create user" })
+    }
+})
+
+/**
+ * 登入 (POST /login)
+ * Body: { username, password }
+ */
+router.post("/login", async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { username, password } = req.body
+
+        // 1. 檢查是否有傳 username 與 password
+        if (!username || !password) {
+            res.status(400).json({ error: "Missing username or password" })
+            return
+        }
+
+        // 2. 查詢是否有此使用者
+        const user = await UserModel.findOne({ username })
+        if (!user) {
+            res.status(404).json({ error: "User not found" })
+            return
+        }
+
+        // 3. 驗證密碼 (compare 明文 vs 雜湊後)
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            res.status(401).json({ error: "Invalid credentials" })
+            return
+        }
+
+        // 4. 產生 JWT (或是建立 session)
+        //    secret 可放在 .env，例如 process.env.JWT_SECRET
+        if (!process.env.JWT_SECRET) {
+            res.status(500).json({ error: "JWT_SECRET is not set in the environment variables" })
+            return
+        }
+        const token = jwt.sign(
+            { userId: user._id, username: user.username },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }, // token 有效期 (1 小時)
+        )
+
+        // 5. 回傳 token 或使用者資訊
+        res.json({
+            message: "Login successful",
+            token,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+            },
+        })
+    } catch (err) {
+        console.error("Login error:", err)
+        res.status(500).json({ error: "Server error" })
+        return
     }
 })
 

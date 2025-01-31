@@ -17,7 +17,7 @@ app.use(
 
 app.use(express.json())
 app.use("/defaultCharacters", defaultCharacterRoutes)
-app.use("/register", usersRoutes)
+app.use("/", usersRoutes)
 
 // 連接到 MongoDB
 const connectDB = async () => {
