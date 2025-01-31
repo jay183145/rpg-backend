@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import cors from "cors"
 import dotenv from "dotenv"
 import defaultCharacterRoutes from "./routes/defaultCharacterRoutes.js"
-import usersRoutes from "./routes/users.js"
+import usersRoutes from "./routes/userRoutes.js"
 dotenv.config()
 
 const app = express()
