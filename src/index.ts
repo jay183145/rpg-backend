@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import cors from "cors"
 import dotenv from "dotenv"
 import defaultCharacterRoutes from "./routes/defaultCharacterRoutes.js"
-
+import usersRoutes from "./routes/users.js"
 dotenv.config()
 
 const app = express()
@@ -17,6 +17,7 @@ app.use(
 
 app.use(express.json())
 app.use("/defaultCharacters", defaultCharacterRoutes)
+app.use("/register", usersRoutes)
 
 // 連接到 MongoDB
 const connectDB = async () => {
