@@ -4,6 +4,8 @@ import cors from "cors"
 import dotenv from "dotenv"
 import defaultCharacterRoutes from "./routes/defaultCharacterRoutes.js"
 import usersRoutes from "./routes/userRoutes.js"
+import characterRoutes from "./routes/characterRoutes.js"
+
 dotenv.config()
 
 const app = express()
@@ -16,6 +18,7 @@ app.use(
 )
 
 app.use(express.json())
+app.use("/characters", characterRoutes)
 app.use("/defaultCharacters", defaultCharacterRoutes)
 app.use("/", usersRoutes)
 

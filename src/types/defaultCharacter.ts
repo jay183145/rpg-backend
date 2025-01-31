@@ -1,4 +1,5 @@
-// Extend Mongoose's Document and combine it with DefaultCharacter
+import { Document } from "mongoose"
+
 export interface DefaultCharacterDocument extends Document, DefaultCharacter {}
 
 export interface DefaultCharacter {
