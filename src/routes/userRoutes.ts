@@ -3,6 +3,8 @@ import { Router, Request, Response } from "express"
 import UserModel from "../models/user.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { UserPayload } from "../types/user.js"
+import { Types } from "mongoose"
 
 const router = Router()
 
@@ -84,8 +86,9 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
             res.status(500).json({ error: "JWT_SECRET is not set in the environment variables" })
             return
         }
+        const userId = user._id as Types.ObjectId
         const token = jwt.sign(
-            { userId: user._id, username: user.username },
+            { userId: userId, username: user.username, email: user.email } satisfies UserPayload,
             process.env.JWT_SECRET,
             { expiresIn: "1h" }, // token 有效期 (1 小時)
         )

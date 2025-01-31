@@ -1,4 +1,4 @@
-import { Document } from "mongoose"
+import { Document, Types } from "mongoose"
 
 export interface UserDocument extends Document {
     username: string
@@ -8,7 +8,7 @@ export interface UserDocument extends Document {
 
 // 用於 JWT 的 payload
 export interface UserPayload {
-    _id: string
+    userId: Types.ObjectId
     username: string
     email: string
 }
