@@ -9,7 +9,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         const defaultCharacters = await DefaultCharacter.find()
         res.json(defaultCharacters)
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ code: 500, error: err.message })
         console.log(err)
     }
 })
@@ -19,12 +19,12 @@ router.get("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
         const defaultCharacter = await DefaultCharacter.findById(req.params._id)
         if (!defaultCharacter) {
-            res.status(404).json({ error: "DefaultCharacter not found" })
+            res.status(404).json({ code: 404, error: "DefaultCharacter not found" })
             return
         }
         res.json(defaultCharacter)
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ code: 500, error: err.message })
         console.log(err)
     }
 })
@@ -34,12 +34,12 @@ router.get("/class/:characterClass", async (req: Request, res: Response): Promis
     try {
         const defaultCharacter = await DefaultCharacter.findOne({ characterClass: req.params.characterClass })
         if (!defaultCharacter) {
-            res.status(404).json({ error: "DefaultCharacter not found" })
+            res.status(404).json({ code: 404, error: "DefaultCharacter not found" })
             return
         }
         res.json(defaultCharacter)
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ code: 500, error: err.message })
         console.log(err)
     }
 })
@@ -49,14 +49,14 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     try {
         const { characterClass, type, description, image, ...rest } = req.body
         if (!characterClass || !type || !description || !image) {
-            res.status(400).json({ error: "CharacterClass, type, description, and image are required" })
+            res.status(400).json({ code: 400, error: "CharacterClass, type, description, and image are required" })
             return
         }
         const defaultCharacter = new DefaultCharacter({ characterClass, type, description, image, ...rest })
         await defaultCharacter.save()
         res.status(201).json(defaultCharacter)
     } catch (err) {
-        res.status(400).json({ error: err.message })
+        res.status(400).json({ code: 400, error: err.message })
         console.log(err)
     }
 })
@@ -66,20 +66,20 @@ router.put("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
         const { characterClass, type, description, image } = req.body
         if (!characterClass || !type || !description || !image) {
-            res.status(400).json({ error: "CharacterClass, type, description, and image are required" })
+            res.status(400).json({ code: 400, error: "CharacterClass, type, description, and image are required" })
             return
         }
         const updatedDefaultCharacter = await DefaultCharacter.findByIdAndUpdate(req.params._id, req.body, {
             new: true,
         })
         if (!updatedDefaultCharacter) {
-            res.status(404).json({ error: "DefaultCharacter not found" })
+            res.status(404).json({ code: 404, error: "DefaultCharacter not found" })
             return
         }
 
         res.json(updatedDefaultCharacter)
     } catch (err) {
-        res.status(400).json({ error: err.message })
+        res.status(400).json({ code: 400, error: err.message })
         console.log(err)
     }
 })
@@ -89,12 +89,12 @@ router.delete("/:_id", async (req: Request, res: Response): Promise<void> => {
     try {
         const deletedDefaultCharacter = await DefaultCharacter.findByIdAndDelete(req.params._id)
         if (!deletedDefaultCharacter) {
-            res.status(404).json({ error: `DefaultCharacter with id ${req.params._id} not found` })
+            res.status(404).json({ code: 404, error: `DefaultCharacter with id ${req.params._id} not found` })
             return
         }
         res.json({ message: "DefaultCharacter deleted successfully" })
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ code: 500, error: err.message })
         console.log(err)
     }
 })

@@ -13,13 +13,13 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
     // 1. 取得 Authorization Header
     const authHeader = req.headers.authorization
     if (!authHeader) {
-        return res.status(401).json({ error: "No token provided" })
+        return res.status(401).json({ code: 401, error: "No token provided" })
     }
 
     // 2. 分解 'Bearer <token>'
     const [scheme, token] = authHeader.split(" ")
     if (scheme !== "Bearer" || !token) {
-        return res.status(401).json({ error: "Malformed token" })
+        return res.status(401).json({ code: 401, error: "Malformed token" })
     }
 
     try {
@@ -37,6 +37,6 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
         return next()
     } catch (err) {
         console.error("Invalid token:", err)
-        return res.status(401).json({ error: "Invalid token" })
+        return res.status(401).json({ code: 401, error: "Invalid token" })
     }
 }

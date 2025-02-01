@@ -19,7 +19,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
 
         // 1. 基本檢查
         if (!username || !email || !password) {
-            res.status(400).json({ error: "Missing required fields" })
+            res.status(400).json({ code: 400, error: "Missing required fields" })
             return
         }
 
@@ -28,7 +28,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
             $or: [{ username }, { email }],
         })
         if (existingUser) {
-            res.status(409).json({ error: "Username or email already taken" })
+            res.status(409).json({ code: 409, error: "Username or email already taken" })
             return
         }
 
@@ -48,7 +48,7 @@ router.post("/register", async (req: Request, res: Response): Promise<void> => {
         })
     } catch (err) {
         console.error("Error creating user:", err)
-        res.status(500).json({ error: "Failed to create user" })
+        res.status(500).json({ code: 500, error: "Failed to create user" })
     }
 })
 
@@ -62,28 +62,28 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
 
         // 1. 檢查是否有傳 username 與 password
         if (!username || !password) {
-            res.status(400).json({ error: "Missing username or password" })
+            res.status(400).json({ code: 400, error: "Missing username or password" })
             return
         }
 
         // 2. 查詢是否有此使用者
         const user = await UserModel.findOne({ username })
         if (!user) {
-            res.status(404).json({ error: "User not found" })
+            res.status(404).json({ code: 404, error: "User not found" })
             return
         }
 
         // 3. 驗證密碼 (compare 明文 vs 雜湊後)
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
-            res.status(401).json({ error: "Invalid credentials" })
+            res.status(401).json({ code: 401, error: "Invalid credentials" })
             return
         }
 
         // 4. 產生 JWT (或是建立 session)
         //    secret 可放在 .env，例如 process.env.JWT_SECRET
         if (!process.env.JWT_SECRET) {
-            res.status(500).json({ error: "JWT_SECRET is not set in the environment variables" })
+            res.status(500).json({ code: 500, error: "JWT_SECRET is not set in the environment variables" })
             return
         }
         const userId = user._id as Types.ObjectId
@@ -105,7 +105,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
         })
     } catch (err) {
         console.error("Login error:", err)
-        res.status(500).json({ error: "Server error" })
+        res.status(500).json({ code: 500, error: "Server error" })
         return
     }
 })

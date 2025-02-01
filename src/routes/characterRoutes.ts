@@ -22,7 +22,7 @@ router.post(
 
             const defChar = await DefaultCharacterModel.findOne({ characterClass: characterClass })
             if (!defChar) {
-                res.status(404).json({ error: "Default character not found" })
+                res.status(404).json({ code: 404, error: "Default character not found" })
                 return
             }
 
@@ -48,7 +48,7 @@ router.post(
             res.status(201).json(character)
         } catch (err) {
             console.error("Error creating character:", err)
-            res.status(500).json({ error: "Failed to create character" })
+            res.status(500).json({ code: 500, error: "Failed to create character" })
             return
         }
     },
