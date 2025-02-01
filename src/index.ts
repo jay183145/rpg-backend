@@ -5,6 +5,7 @@ import dotenv from "dotenv"
 import defaultCharacterRoutes from "./routes/defaultCharacterRoutes.js"
 import usersRoutes from "./routes/userRoutes.js"
 import characterRoutes from "./routes/characterRoutes.js"
+import cookieParser from "cookie-parser"
 
 dotenv.config()
 
@@ -19,6 +20,7 @@ app.use(
 )
 
 app.use(express.json())
+app.use(cookieParser())
 app.use("/characters", characterRoutes)
 app.use("/defaultCharacters", defaultCharacterRoutes)
 app.use("/", usersRoutes)

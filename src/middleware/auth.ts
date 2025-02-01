@@ -10,30 +10,24 @@ export interface AuthRequest extends Request {
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
-    // 1. 取得 Authorization Header
-    const authHeader = req.headers.authorization
-    if (!authHeader) {
+    // 1. 從 cookie 中獲取 token
+    const token = req.cookies.token
+    if (!token) {
         return res.status(401).json({ code: 401, error: "No token provided" })
     }
 
-    // 2. 分解 'Bearer <token>'
-    const [scheme, token] = authHeader.split(" ")
-    if (scheme !== "Bearer" || !token) {
-        return res.status(401).json({ code: 401, error: "Malformed token" })
-    }
-
     try {
-        // 3. 驗證 token
+        // 2. 驗證 token
         if (!process.env.JWT_SECRET) {
             throw new Error("JWT_SECRET is not set")
         }
         const secretKey = process.env.JWT_SECRET
         const decoded = jwt.verify(token, secretKey)
 
-        // 4. 將解出的 payload 資訊放入 req.user
+        // 3. 將解出的 payload 資訊放入 req.user
         req.user = decoded as UserPayload
 
-        // 5. 驗證通過後進入下一步
+        // 4. 驗證通過後進入下一步
         return next()
     } catch (err) {
         console.error("Invalid token:", err)
