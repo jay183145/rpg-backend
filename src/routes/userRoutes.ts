@@ -93,7 +93,14 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
             { expiresIn: "1h" }, // token 有效期 (1 小時)
         )
 
-        // 5. 回傳 token 或使用者資訊
+        // 5. 把使用者資訊存入 cookie
+        if (process.env.NODE_ENV !== "development") {
+            res.cookie("token", token, { httpOnly: true, secure: false, maxAge: 24 * 60 * 60 * 1000 })
+        } else {
+            res.cookie("token", token, { httpOnly: true, secure: true, maxAge: 24 * 60 * 60 * 1000 })
+        }
+
+        // 6. 回傳 token 或使用者資訊
         res.json({
             message: "Login successful",
             token,

@@ -11,9 +11,10 @@ dotenv.config()
 const app = express()
 app.use(
     cors({
-        origin: "*", // Frontend URL
+        origin: process.env.FRONTEND_URL || "http://localhost:3000", // 使用環境變數，如果未設定則使用預設值
         methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+        credentials: true, // 允許 cookie 跨域
     }),
 )
 
