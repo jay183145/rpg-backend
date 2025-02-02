@@ -105,7 +105,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
                 path: "/",
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict",
+                sameSite: "lax",
                 maxAge: 24 * 60 * 60 * 1000,
             })
         } else {
