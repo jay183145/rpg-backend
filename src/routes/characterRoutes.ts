@@ -54,4 +54,19 @@ router.post(
     },
 )
 
+/**
+ * 取得當前使用者創建的所有角色 (GET /characters)
+ * 需身分驗證 => authMiddleware
+ */
+router.get("/", authMiddleware as RequestHandler, async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user.userId
+        const characters = await CharacterModel.find({ owner: userId })
+        res.json(characters)
+    } catch (err) {
+        console.error("Error fetching user characters:", err)
+        res.status(500).json({ code: 500, error: "Failed to fetch characters" })
+    }
+})
+
 export default router
