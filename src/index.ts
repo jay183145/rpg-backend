@@ -13,9 +13,10 @@ const app = express()
 app.use(
     cors({
         origin: process.env.FRONTEND_URL || "http://localhost:3000", // 使用環境變數，如果未設定則使用預設值
-        methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
         credentials: true, // 允許 cookie 跨域
+        optionsSuccessStatus: 200, // 解決 OPTIONS 預檢請求的問題
     }),
 )
 
@@ -38,7 +39,7 @@ const connectDB = async () => {
 connectDB()
 
 // 啟動服務器
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)
 })
