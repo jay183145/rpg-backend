@@ -96,9 +96,12 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
         // 5. 把使用者資訊存入 cookie
         // 欲存入 cookie 的 domain
         const domain = process.env.FRONTEND_URL
+        const url = new URL(domain)
+        const domainName = `.${url.hostname}`
+
         if (process.env.NODE_ENV === "production") {
             res.cookie("token", token, {
-                domain: domain,
+                domain: domainName,
                 path: "/",
                 httpOnly: true,
                 secure: true,
