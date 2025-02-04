@@ -10,8 +10,8 @@ export interface AuthRequest extends Request {
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
-    // 1. 從 cookie 中獲取 token
-    const token = req.cookies.token
+    // 1. 從 header 中獲取 token
+    const token = req.headers.authorization?.split(" ")[1]
     if (!token) {
         return res.status(401).json({ code: 401, error: "No token provided" })
     }
