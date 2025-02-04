@@ -96,12 +96,7 @@ router.post("/login", async (req: Request, res: Response): Promise<void> => {
         // 5. 把使用者資訊存入 cookie
         // 修改 cookie 設置方式
         if (process.env.NODE_ENV === "production") {
-            // 直接使用 FRONTEND_URL 的 hostname，不需要加點
-            const domain = process.env.FRONTEND_URL ? new URL(process.env.FRONTEND_URL).hostname : undefined
-
             res.cookie("token", token, {
-                domain: domain,
-                path: "/",
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict", // 改用 strict 增加安全性

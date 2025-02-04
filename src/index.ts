@@ -15,7 +15,7 @@ app.use(
         origin: process.env.FRONTEND_URL || "http://localhost:3000", // 使用環境變數，如果未設定則使用預設值
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed HTTP methods
         allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-        credentials: true, // 允許 cookie 跨域
+        credentials: true,
         optionsSuccessStatus: 200, // 解決 OPTIONS 預檢請求的問題
     }),
 )
